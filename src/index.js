@@ -138,12 +138,12 @@ class Point {
   }
 
   get(id, callback) {
-    let extension = _(extensions).chain()
+    let extension = _(this.extensions).chain()
         .filter(function (obj) { return obj.id === id; }).first().value();
 
     if (extension) {
         callback(extension);
-        sort();
+        this.sort();
     }
 
     return this;
@@ -181,7 +181,7 @@ class Point {
   }
 
   isEnabled(id) {
-    return !this.disabled[id] && !disabled['*']
+    return !this.disabled[id] && !this.disabled['*']
   }
 
   count() {
