@@ -190,11 +190,14 @@ class Point {
 
   exec(methodName, context) {
     const args = Array.from(arguments)
-    return this.reduce(function(prev, ext, list) {
+    return this.reduce(function(prev, ext) {
+      let extendedArgs = args.slice(2) //skip methodname and context
+      extendedArgs.unshift(prev) // at this as the first argument
+      extendedArgs = [methodName, context].concat(extendedArgs)
       if(!prev) {
-        return ext.invoke.apply(context, args)
+        return ext.invoke.apply(context, extendedArgs)
       }
-      return ext.invoke.apply(context, args)
+      return ext.invoke.apply(context, extendedArgs)
     })
   }
 
