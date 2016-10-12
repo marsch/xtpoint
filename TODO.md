@@ -1,0 +1,3 @@
+- [ ] documentation
+- [ ] set up tooling
+- [ ] examples
