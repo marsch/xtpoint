@@ -199,9 +199,8 @@ class Point {
    * @chainable
    */
   get(id, callback) {
-    let extension = _(this.extensions)
-      .chain()
-      .filter(function (obj) { return obj.id === id; })
+    const extension = _(this.extensions).chain()
+      .filter(function (obj) { return obj.id === id })
       .first()
       .value()
 
@@ -300,6 +299,24 @@ class Point {
    */
   count() {
     return this.list().value().length
+  }
+
+  /**
+   * @param {string} methodName
+   * @param {object} context
+   * @return {mixed}
+   */
+  exec(methodName, context) {
+    const args = Array.from(arguments)
+    return this.reduce(function(prev, ext) {
+      let extendedArgs = args.slice(2) // skip methodname and context
+      extendedArgs.unshift(prev) // at this as the first argument
+      extendedArgs = [methodName, context].concat(extendedArgs)
+      if (!prev) {
+        return ext.invoke.apply(context, extendedArgs)
+      }
+      return ext.invoke.apply(context, extendedArgs)
+    })
   }
 
 }
